@@ -1,0 +1,53 @@
+---
+{{ ansible_managed | comment }}
+
+listen-address: :8081
+location: 'http://jujucharms.com/identity'
+storage:
+    type: mongodb
+    address: localhost:27017
+public-key: OAG9EVDFgXzWQKIk+MTxpLVO1Mp1Ws/pIkzhxv5Jk1M=
+private-key: q2G3A2NjTe7MP9D8iugCH9XfBAyrnV8n8u8ACbNyNOY=
+identity-providers:
+- type: usso
+- type: ldap
+  name: ldap
+  description: LDAP Login
+  domain: example
+  url: ldap://ldap.example.com/dc=example,dc=com
+  ca-cert: |
+    -----BEGIN CERTIFICATE-----
+    MIIBWTCCAQOgAwIBAgIBADANBgkqhkiG9w0BAQsFADAbMRkwFwYDVQQDExBsZGFw
+    LmV4YW1wbGUuY29tMB4XDTE4MDQxODEwMDUzMVoXDTI4MDQyMDEwMDUzMVowGzEZ
+    MBcGA1UEAxMQbGRhcC5leGFtcGxlLmNvbTBcMA0GCSqGSIb3DQEBAQUAA0sAMEgC
+    QQDN2tltcVwW0bs80ABocjSZrqBDnpuxnzq2DlrLL+hldwDxVZ0sqU+o768GB6bP
+    8k3WVf81yYBRbfq7pD/MX0BhAgMBAAGjMjAwMA8GA1UdEwEB/wQFMAMBAf8wHQYD
+    VR0OBBYEFEMAeAXsITzTXHDfJSzrezBkaSvwMA0GCSqGSIb3DQEBCwUAA0EAw6Rh
+    RlR4L5mvvDaN4NP/aNOaWGe+x1Oa7V3L75MmD3DbwcUgDCn45EaUGofbOTrbYuzm
+    mrVoMF002dpQoqc38w==
+    -----END CERTIFICATE-----
+  dn: cn=candid,dc=example,dc=com
+  password: 6IaWWtW/aTN0CIVYwLgeOayyZW8o
+  user-query-filter: (objectClass=account)
+  user-query-attrs:
+    id: uid
+    email: mail
+    display-name: displayName
+  group-query-filter: (&(objectClass=groupOfNames)(member={{.User}}))
+  hidden: false
+- type: static
+  name: static
+  domain: mydomain
+  description: Static Identity Provider
+  users:
+    user1:
+      name: User One
+      email: user1@example.com
+      password: password1
+      groups: [group1, group2]
+    user2:
+      name: User Two
+      email: user2@example.com
+      password: password2
+      groups: [group3, group4]
+  hidden: false
